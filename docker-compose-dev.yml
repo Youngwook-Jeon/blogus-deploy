@@ -1,0 +1,38 @@
+version: '3'
+services:
+  postgres-db:
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=blogus
+  api-service:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./blogus-backend
+    depends_on:
+      - postgres-db
+    environment:
+      - spring.datasource.url=jdbc:postgresql://postgres-db:5432/blogus
+      - spring.datasource.username=${POSTGRES_USER:-postgres}
+      - spring.datasource.password=${POSTGRES_PASSWORD:-password}
+      - blogus.host=http://api-service:8080/
+      - blogus.client=http://client:3000/
+  client:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    environment:
+      - WDS_SOCKET_PORT=0
+  nginx:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    depends_on:
+      - api-service
+      - client
+    ports:
+      - '3050:80'

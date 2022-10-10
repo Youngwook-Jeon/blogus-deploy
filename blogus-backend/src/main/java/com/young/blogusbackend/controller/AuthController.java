@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import static com.young.blogusbackend.service.CookieService.REFRESH_TOKEN_COOKIE_NAME;
 
 @RestController
-@RequestMapping("/api/auth") @RequiredArgsConstructor
+@RequestMapping("/auth") @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;

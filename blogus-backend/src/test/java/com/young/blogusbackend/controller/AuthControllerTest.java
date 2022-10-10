@@ -69,7 +69,7 @@ class AuthControllerTest {
                 new RegisterRequest("mayer", "mayerjeon@gmail.com", "P4ssword!@#$", "P4ssword!@#$");
 
         // Run the test
-        ResultActions resultActions = mockMvc.perform(post("/api/auth/register")
+        ResultActions resultActions = mockMvc.perform(post("/auth/register")
                 .content(objectMapper.writeValueAsString(registerRequest)).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -92,7 +92,7 @@ class AuthControllerTest {
                 new RegisterRequest("m", "wrongemail@", "P4ssword!@#$", "P4ssword");
 
         // Run the test
-        ResultActions resultActions = mockMvc.perform(post("/api/auth/register")
+        ResultActions resultActions = mockMvc.perform(post("/auth/register")
                 .content(objectMapper.writeValueAsString(registerRequest)).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -114,7 +114,7 @@ class AuthControllerTest {
 
         // Run the test
         ResultActions resultActions =
-                mockMvc.perform(get("/api/auth/accountVerification/{token}", token)
+                mockMvc.perform(get("/auth/accountVerification/{token}", token)
                         .accept(MediaType.APPLICATION_JSON));
 
         // Verify the results
@@ -137,7 +137,7 @@ class AuthControllerTest {
         LoginRequest loginRequest = new LoginRequest("mayerjeon@gmail.com", "P4ssword!@#$");
 
         // Run the test
-        ResultActions resultActions = mockMvc.perform(post("/api/auth/login")
+        ResultActions resultActions = mockMvc.perform(post("/auth/login")
                 .content(objectMapper.writeValueAsString(loginRequest)).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -161,7 +161,7 @@ class AuthControllerTest {
         LoginRequest loginRequest = new LoginRequest("mayerjeon@gmail.com", "WRONG_PASSWORD123!!");
 
         // Run the test
-        ResultActions resultActions = mockMvc.perform(post("/api/auth/login")
+        ResultActions resultActions = mockMvc.perform(post("/auth/login")
                 .content(objectMapper.writeValueAsString(loginRequest)).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -177,7 +177,7 @@ class AuthControllerTest {
     void testRefreshToken_whenTheRequestHasNoCookie_returnsWithBadRequestStatus() throws Exception {
         // Setup
         // Run the test
-        ResultActions resultActions = mockMvc.perform(get("/api/auth/refreshToken")
+        ResultActions resultActions = mockMvc.perform(get("/auth/refreshToken")
                 .accept(MediaType.APPLICATION_JSON));
 
         // Verify the results
@@ -197,7 +197,7 @@ class AuthControllerTest {
         blogerRepository.save(bloger);
 
         // Run the test
-        ResultActions resultActions = mockMvc.perform(get("/api/auth/refreshToken")
+        ResultActions resultActions = mockMvc.perform(get("/auth/refreshToken")
                 .cookie(cookieService.createRefreshTokenCookie(refreshToken))
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -220,7 +220,7 @@ class AuthControllerTest {
         blogerRepository.save(bloger);
 
         // Run the test
-        ResultActions resultActions = mockMvc.perform(get("/api/auth/logout")
+        ResultActions resultActions = mockMvc.perform(get("/auth/logout")
                 .accept(MediaType.APPLICATION_JSON));
 
         // Verify the results
