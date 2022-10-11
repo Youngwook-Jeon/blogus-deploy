@@ -10,34 +10,8 @@ spring:
 blogus:
   host: http://localhost:8080
   client: http://localhost:3000
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-  datasource:
-    url: jdbc:postgresql://localhost:5432/blogus
-    username: postgres
-    password: password
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-    database: postgresql
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
-token:
-  secret: ykIQjX6bZSHO0mkjkNL8U3Ht9NtzjtIZ
+jwt:
+  access_token_secret: STcB4qN1zuBT9JhsMtMHvO49egxKBFkJ
+  refresh_token_secret: IkTxCLzS1acfS5jZpRxcNS9eTEuoZ2te
+  access_token_expiration_time: 1800000 # 30 minutes
+  refresh_token_expiration_time: 2592000000 # 30 days

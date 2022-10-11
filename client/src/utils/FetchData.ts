@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const SERVER_URL = 'http://localhost:8080';
-const CLIENT_URL = 'http://localhost:3000';
+// const SERVER_URL = 'http://localhost:8080';
+// const CLIENT_URL = 'http://localhost:3000';
+const API_SERVER_PREFIX = '/api/';
 const AUTH_PREFIX = 'Bearer ';
 
 // const instance = axios.create ({
@@ -17,10 +18,10 @@ export const postAPI = async (url: string, post: object, token?: string) => {
   //   headers: { Authorization: token ? AUTH_PREFIX + token : token }
   // });
 
-  const res = await axios.post(SERVER_URL + `/api/${url}`, post, {
+  const res = await axios.post(API_SERVER_PREFIX + `${url}`, post, {
     headers: { 
       Authorization: token ? AUTH_PREFIX + token : token,
-      'Access-Control-Allow-Origin': CLIENT_URL,
+      // 'Access-Control-Allow-Origin': CLIENT_URL,
     },
     // baseURL: SERVER_URL, 
     withCredentials: true,
@@ -33,10 +34,10 @@ export const getAPI = async (url: string, token?: string) => {
   // const res = await axios.get(SERVER_URL + `/api/${url}`, {
   //   headers: { Authorization: token ? AUTH_PREFIX + token : token }
   // });
-  const res = await axios.get(SERVER_URL + `/api/${url}`, {
+  const res = await axios.get(API_SERVER_PREFIX + `${url}`, {
     headers: { 
       Authorization: token ? AUTH_PREFIX + token : token,
-      'Access-Control-Allow-Origin': CLIENT_URL,
+      // 'Access-Control-Allow-Origin': CLIENT_URL,
     },
     // baseURL: SERVER_URL, 
     withCredentials: true,
@@ -46,10 +47,10 @@ export const getAPI = async (url: string, token?: string) => {
 };
 
 export const patchAPI = async (url: string, post: object, token?: string) => {
-  const res = await axios.patch(SERVER_URL + `/api/${url}`, post, {
+  const res = await axios.patch(API_SERVER_PREFIX + `${url}`, post, {
     headers: { 
       Authorization: token ? AUTH_PREFIX + token : token,
-      'Access-Control-Allow-Origin': CLIENT_URL,
+      // 'Access-Control-Allow-Origin': CLIENT_URL,
     },
     // baseURL: SERVER_URL, 
     withCredentials: true,
@@ -62,10 +63,10 @@ export const deleteAPI = async (url: string, token?: string) => {
   // const res = await axios.delete(SERVER_URL + `/api/${url}`, {
   //   headers: { Authorization: token ? AUTH_PREFIX + token : token }
   // });
-  const res = await axios.delete(SERVER_URL + `/api/${url}`, {
+  const res = await axios.delete(API_SERVER_PREFIX + `${url}`, {
     headers: { 
       Authorization: token ? AUTH_PREFIX + token : token,
-      'Access-Control-Allow-Origin': CLIENT_URL,
+      // 'Access-Control-Allow-Origin': CLIENT_URL,
     },
     // baseURL: SERVER_URL, 
     withCredentials: true,
@@ -78,10 +79,10 @@ export const putAPI = async (url: string, post: object, token?: string) => {
   // const res = await axios.put(SERVER_URL + `/api/${url}`, post, {
   //   headers: { Authorization: token ? AUTH_PREFIX + token : token }
   // });
-  const res = await axios.put(SERVER_URL + `/api/${url}`, post, {
+  const res = await axios.put(API_SERVER_PREFIX + `${url}`, post, {
     headers: { 
       Authorization: token ? AUTH_PREFIX + token : token,
-      'Access-Control-Allow-Origin': CLIENT_URL,
+      // 'Access-Control-Allow-Origin': CLIENT_URL,
     },
     // baseURL: SERVER_URL, 
     withCredentials: true,

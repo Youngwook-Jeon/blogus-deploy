@@ -9,14 +9,14 @@ const Home = () => {
   const { homeBlogs } = useSelector((state: RootStore) => state);
 
   if (homeBlogs.length === 0) return <Loading />;
-  
+
   return (
     <div className="home_page">
       {
         homeBlogs.map(homeBlog => (
           <div key={homeBlog.id}>
             {
-              homeBlog.count > 0 && 
+              homeBlog.count > 0 &&
               <>
                 <h3>
                   <Link to={`/blogs/${(homeBlog.name).toLowerCase()}`}>

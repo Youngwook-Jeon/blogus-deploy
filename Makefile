@@ -10,3 +10,6 @@ start:
 
 stop:
 	docker-compose -f docker-compose-dev.yml down
+
+clean: stop
+	docker rmi `docker images -f "dangling=true" -q`
