@@ -48,6 +48,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTests {
 
+    private final String ORIGIN_URL = "http://localhost:3000";
+
     @Mock
     private BlogerRepository mockBlogerRepository;
     @Mock
@@ -56,8 +58,6 @@ class AuthServiceTests {
     private PasswordEncoder mockPasswordEncoder;
     @Mock
     private MailService mockMailService;
-    @Mock
-    private Environment mockEnv;
     @Mock
     private ITemplateEngine mockTemplateEngine;
     @Mock
@@ -96,8 +96,6 @@ class AuthServiceTests {
         // Configure BlogerRepository.save(...).
         when(mockBlogerRepository.save(bloger)).thenReturn(bloger);
 
-        when(mockEnv.getProperty("blogus.client")).thenReturn("http://our-test-client.com");
-
         // Configure VerificationTokenRepository.save(...).
         final VerificationToken verificationToken = new VerificationToken(0L, "token",
                 new Bloger(0L, "name", "email", "password", "avatar", Role.ROLE_USER, "refreshToken",
@@ -110,7 +108,7 @@ class AuthServiceTests {
         when(mockTemplateEngine.process(eq("mailTemplate"), any(IContext.class))).thenReturn("body");
 
         // Run the test
-        authServiceUnderTest.register(registerRequest);
+        authServiceUnderTest.register(registerRequest, ORIGIN_URL);
 
         // Verify the results
         verify(mockBlogerRepository).save(bloger);
@@ -133,7 +131,7 @@ class AuthServiceTests {
         when(mockBlogerRepository.findByEmail(bloger.getEmail())).thenReturn(Optional.of(bloger));
 
         // Run the test
-        assertThrows(SpringBlogusException.class, () -> authServiceUnderTest.register(registerRequest));
+        assertThrows(SpringBlogusException.class, () -> authServiceUnderTest.register(registerRequest, ORIGIN_URL));
 
         // Verify the results
         verify(mockBlogerRepository, never()).save(any(Bloger.class));

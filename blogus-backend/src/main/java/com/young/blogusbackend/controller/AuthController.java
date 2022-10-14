@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -26,8 +27,11 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public GenericResponse register(@Valid @RequestBody RegisterRequest registerRequest) {
-        authService.register(registerRequest);
+    public GenericResponse register(
+            @Valid @RequestBody RegisterRequest registerRequest,
+            HttpServletRequest request
+    ) {
+        authService.register(registerRequest, request.getHeader("Origin"));
         return new GenericResponse("등록에 성공했습니다. 이메일을 확인해주세요.");
     }
 
@@ -75,4 +79,5 @@ public class AuthController {
         response.addCookie(deletedCookie);
         return new GenericResponse("로그아웃되었습니다.");
     }
+
 }

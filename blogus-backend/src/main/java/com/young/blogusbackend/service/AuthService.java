@@ -13,7 +13,6 @@ import com.young.blogusbackend.repository.BlogerRepository;
 import com.young.blogusbackend.repository.VerificationTokenRepository;
 import com.young.blogusbackend.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,13 +41,12 @@ public class AuthService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
-    private final Environment env;
     private final ITemplateEngine templateEngine;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final BlogerMapper blogerMapper;
 
-    public void register(RegisterRequest registerRequest) {
+    public void register(RegisterRequest registerRequest, String originUrl) {
         Bloger bloger = blogerMapper.registerRequestToBlog(registerRequest);
         Optional<Bloger> blogerOptional = blogerRepository.findByEmail(bloger.getEmail());
         if (blogerOptional.isPresent()) {
@@ -57,15 +55,14 @@ public class AuthService {
         bloger.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
         blogerRepository.save(bloger);
-        sendConfirmEmail(bloger);
+        sendConfirmEmail(bloger, originUrl);
     }
 
-    private void sendConfirmEmail(Bloger bloger) {
-        String client = env.getProperty("blogus.client");
+    private void sendConfirmEmail(Bloger bloger, String originUrl) {
         String token = generateVerificationToken(bloger);
         Context context = new Context();
         context.setVariable("name", bloger.getName());
-        context.setVariable("link", client + "/activate/" + token);
+        context.setVariable("link", originUrl + "/activate/" + token);
         context.setVariable("linkName", "이메일 인증하기");
         context.setVariable("message", "블로거스에 가입하신 것을 환영합니다! 계정을 활성화하기 위해 아래 url을 클릭하세요: ");
         String message = templateEngine.process("mailTemplate", context);
