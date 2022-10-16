@@ -4,3 +4,8 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:///blogustest

@@ -23,22 +23,22 @@ public class BlogusBackendApplication {
         SpringApplication.run(BlogusBackendApplication.class, args);
     }
 
-//    @Bean
-//    @Profile("dev")
-//    public ApplicationRunner initializer(
-//            BlogerRepository blogerRepository,
-//            PasswordEncoder passwordEncoder
-//    ) {
-//        return args -> blogerRepository.save(
-//                Bloger.builder()
-//                        .email("admin@admin.com")
-//                        .enabled(true)
-//                        .role(Role.ROLE_ADMIN)
-//                        .name("Admin")
-//                        .password(passwordEncoder.encode("p4ssword!"))
-//                        .createdAt(Instant.now())
-//                        .updatedAt(Instant.now())
-//                        .build()
-//        );
-//    }
+    @Bean
+    @Profile("dev")
+    public ApplicationRunner initializer(
+            BlogerRepository blogerRepository,
+            PasswordEncoder passwordEncoder
+    ) {
+        return args -> blogerRepository.save(
+                Bloger.builder()
+                        .email("admin@admin.com")
+                        .enabled(true)
+                        .role(Role.ROLE_ADMIN)
+                        .name("Admin")
+                        .password(passwordEncoder.encode("p4ssword!"))
+                        .createdAt(Instant.now())
+                        .updatedAt(Instant.now())
+                        .build()
+        );
+    }
 }

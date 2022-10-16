@@ -1,5 +1,5 @@
 build:
-	cd ./blogus-backend; mvn -q clean package
+	cd ./blogus-backend; mvn -q clean package -DskipTests
 	cd ./client; npm install
 
 run: build

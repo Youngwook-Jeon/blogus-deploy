@@ -10,8 +10,9 @@ import com.young.blogusbackend.security.JwtProvider;
 import com.young.blogusbackend.service.AuthService;
 import com.young.blogusbackend.service.CookieService;
 import com.young.blogusbackend.service.MailService;
+import com.young.blogusbackend.util.AbstractContainerBaseTest;
+import com.young.blogusbackend.util.AuthTestUtil;
 import com.young.blogusbackend.util.MockMvcTest;
-import com.young.blogusbackend.util.TestUtil;
 import com.young.blogusbackend.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-class AuthControllerTest {
+class AuthControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -108,7 +109,7 @@ class AuthControllerTest {
     @Test
     void testVerifyAccount() throws Exception {
         // Setup
-        Bloger bloger = TestUtil.createValidUserNotEnabled();
+        Bloger bloger = AuthTestUtil.createValidUserNotEnabled();
         blogerRepository.save(bloger);
         String token = authService.generateVerificationToken(bloger);
 
@@ -118,7 +119,7 @@ class AuthControllerTest {
                         .accept(MediaType.APPLICATION_JSON));
 
         // Verify the results
-        Optional<Bloger> blogerOptional = blogerRepository.findByEmail(TestUtil.VALID_USER_EMAIL);
+        Optional<Bloger> blogerOptional = blogerRepository.findByEmail(AuthTestUtil.VALID_USER_EMAIL);
         assertThat(blogerOptional.isPresent()).isTrue();
         assertThat(blogerOptional.get().isEnabled()).isTrue();
 
@@ -131,7 +132,7 @@ class AuthControllerTest {
     @Test
     void testLogin() throws Exception {
         // Setup
-        Bloger bloger = TestUtil.createValidUser();
+        Bloger bloger = AuthTestUtil.createValidUser();
         bloger.setPassword(passwordEncoder.encode(bloger.getPassword()));
         blogerRepository.save(bloger);
         LoginRequest loginRequest = new LoginRequest("mayerjeon@gmail.com", "P4ssword!@#$");
@@ -155,7 +156,7 @@ class AuthControllerTest {
     @Test
     void testLogin_givenLoginRequestIsIncorrect_returnsWithBadRequestStatus() throws Exception {
         // Setup
-        Bloger bloger = TestUtil.createValidUser();
+        Bloger bloger = AuthTestUtil.createValidUser();
         bloger.setPassword(passwordEncoder.encode(bloger.getPassword()));
         blogerRepository.save(bloger);
         LoginRequest loginRequest = new LoginRequest("mayerjeon@gmail.com", "WRONG_PASSWORD123!!");
@@ -190,7 +191,7 @@ class AuthControllerTest {
     @Test
     void testRefreshToken() throws Exception {
         // Setup
-        Bloger bloger = TestUtil.createValidUser();
+        Bloger bloger = AuthTestUtil.createValidUser();
         blogerRepository.save(bloger); // id is needed
         String refreshToken = jwtProvider.generateRefreshToken(bloger);
         bloger.setRefreshToken(refreshToken);
@@ -215,7 +216,7 @@ class AuthControllerTest {
     @WithMockCustomUser
     void testLogout() throws Exception {
         // Setup
-        Bloger bloger = TestUtil.createValidUser();
+        Bloger bloger = AuthTestUtil.createValidUser();
         bloger.setPassword(passwordEncoder.encode(bloger.getPassword()));
         blogerRepository.save(bloger);
 

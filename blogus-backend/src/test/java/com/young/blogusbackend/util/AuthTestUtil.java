@@ -5,7 +5,7 @@ import com.young.blogusbackend.model.Role;
 
 import java.time.Instant;
 
-public class TestUtil {
+public class AuthTestUtil {
 
     public static final String VALID_USER_NAME = "Mayer";
     public static final String VALID_USER_EMAIL = "mayerjeon@gmail.com";
