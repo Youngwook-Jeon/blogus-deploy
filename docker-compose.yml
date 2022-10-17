@@ -1,0 +1,24 @@
+version: "3"
+services:
+  client:
+    image: "ela87/blogus-client"
+    hostname: client
+  api-service:
+    image: "ela87/blogus-api"
+    hostname: api-service
+    environment:
+      - spring.profiles.active=prod
+      - spring.datasource.url=$DATASOURCE_URL
+      - spring.datasource.username=$DATASOURCE_USERNAME
+      - spring.datasource.password=$DATASOURCE_PASSWORD
+      - spring.mail.username=$MAIL_USERNAME
+      - spring.mail.password=$MAIL_PASSWORD
+      - blogus.host=http://api-service:8080/
+      - blogus.client=http://client:3000/
+      - jwt.access_token_secret=$ACCESS_TOKEN_SECRET
+      - jwt.refresh_token_secret=$REFRESH_TOKEN_SECRET
+  nginx:
+    image: "ela87/blogus-nginx"
+    hostname: nginx
+    ports:
+      - "80:80"

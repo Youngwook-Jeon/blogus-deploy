@@ -11,7 +11,7 @@ blogus:
   host: http://localhost:8080
   client: http://localhost:3000
 jwt:
-  access_token_secret: STcB4qN1zuBT9JhsMtMHvO49egxKBFkJ
-  refresh_token_secret: IkTxCLzS1acfS5jZpRxcNS9eTEuoZ2te
+  access_token_secret: STcB4qN1zuBT9JhsMtMHvO49egxKBFkJ # another secret will be used in production mode
+  refresh_token_secret: IkTxCLzS1acfS5jZpRxcNS9eTEuoZ2te # another secret will be used in production mode
   access_token_expiration_time: 1800000 # 30 minutes
   refresh_token_expiration_time: 2592000000 # 30 days
