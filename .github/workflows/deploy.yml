@@ -17,10 +17,10 @@ jobs:
           distribution: 'liberica'
           java-version: '17'
       - name: Grant execute permisson for mvnw
-        run: chmod +x mvnw
+        run: chmod +x ./mvnw
         working-directory: ${{ env.backend-directory }}
       - name: Make jars of the Blogus api-server with Maven
-        run: mvnw -q clean package -DskipTests
+        run: ./mvnw -q clean package -DskipTests
         working-directory: ${{ env.backend-directory }}
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker build -t ela87/blogus-client ./client
