@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -29,16 +30,20 @@ public class BlogusBackendApplication {
             BlogerRepository blogerRepository,
             PasswordEncoder passwordEncoder
     ) {
-        return args -> blogerRepository.save(
-                Bloger.builder()
-                        .email("admin@admin.com")
-                        .enabled(true)
-                        .role(Role.ROLE_ADMIN)
-                        .name("Admin")
-                        .password(passwordEncoder.encode("p4ssword!"))
-                        .createdAt(Instant.now())
-                        .updatedAt(Instant.now())
-                        .build()
-        );
+        return args -> {
+            Optional<Bloger> admin = blogerRepository.findByEmail("admin@admin.com");
+            if (admin.isPresent()) return;
+            blogerRepository.save(
+                    Bloger.builder()
+                            .email("admin@admin.com")
+                            .enabled(true)
+                            .role(Role.ROLE_ADMIN)
+                            .name("Admin")
+                            .password(passwordEncoder.encode("p4ssword!"))
+                            .createdAt(Instant.now())
+                            .updatedAt(Instant.now())
+                            .build()
+            );
+        };
     }
 }

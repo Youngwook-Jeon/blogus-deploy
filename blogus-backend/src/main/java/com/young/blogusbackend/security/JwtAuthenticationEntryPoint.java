@@ -15,6 +15,7 @@ import java.io.OutputStream;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
     @Override
     public void commence(
             HttpServletRequest request,
