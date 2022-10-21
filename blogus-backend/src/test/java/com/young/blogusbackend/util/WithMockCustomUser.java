@@ -1,5 +1,6 @@
 package com.young.blogusbackend.util;
 
+import com.young.blogusbackend.model.Role;
 import org.springframework.security.test.context.support.WithSecurityContext;
 
 import java.lang.annotation.Retention;
@@ -11,5 +12,5 @@ public @interface WithMockCustomUser {
 
     String username() default "mayerjeon@gmail.com";
 
-    String role() default "USER";
+    Role role() default Role.ROLE_USER;
 }

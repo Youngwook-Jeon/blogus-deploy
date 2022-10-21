@@ -20,22 +20,19 @@ import java.time.Instant;
 public class BlogerService {
 
     private final BlogerRepository blogerRepository;
-    private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private final BlogerMapper blogerMapper;
 
-    public void updateUserProfile(UpdateBlogerRequest updateBlogerRequest) {
-        Bloger currentUser = authService.getCurrentUser();
-        currentUser.setName(updateBlogerRequest.getName());
-        currentUser.setAvatar(updateBlogerRequest.getAvatar());
-        currentUser.setUpdatedAt(Instant.now());
-        blogerRepository.save(currentUser);
+    public void updateUserProfile(UpdateBlogerRequest updateBlogerRequest, Bloger currentBloger) {
+        currentBloger.setName(updateBlogerRequest.getName());
+        currentBloger.setAvatar(updateBlogerRequest.getAvatar());
+        currentBloger.setUpdatedAt(Instant.now());
+        blogerRepository.save(currentBloger);
     }
 
-    public void resetPassword(ResetPasswordRequest passwordRequest) {
-        Bloger currentUser = authService.getCurrentUser();
-        currentUser.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
-        blogerRepository.save(currentUser);
+    public void resetPassword(ResetPasswordRequest passwordRequest, Bloger currentBloger) {
+        currentBloger.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
+        blogerRepository.save(currentBloger);
     }
 
 

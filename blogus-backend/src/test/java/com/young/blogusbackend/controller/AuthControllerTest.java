@@ -216,9 +216,6 @@ class AuthControllerTest extends AbstractContainerBaseTest {
     @WithMockCustomUser
     void testLogout() throws Exception {
         // Setup
-        Bloger bloger = AuthTestUtil.createValidUser();
-        bloger.setPassword(passwordEncoder.encode(bloger.getPassword()));
-        blogerRepository.save(bloger);
 
         // Run the test
         ResultActions resultActions = mockMvc.perform(get("/auth/logout")

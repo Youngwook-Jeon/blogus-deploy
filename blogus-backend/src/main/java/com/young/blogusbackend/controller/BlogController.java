@@ -7,6 +7,7 @@ import com.young.blogusbackend.dto.CategoryWithBlogsDto;
 import com.young.blogusbackend.model.Bloger;
 import com.young.blogusbackend.model.Category;
 import com.young.blogusbackend.service.BlogService;
+import com.young.blogusbackend.util.CurrentBloger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,8 +27,8 @@ public class BlogController {
 
     @PostMapping("/blogs")
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogResponse createBlog(@Valid @RequestBody BlogRequest blogRequest) {
-        return blogService.createBlog(blogRequest);
+    public BlogResponse createBlog(@Valid @RequestBody BlogRequest blogRequest, @CurrentBloger Bloger bloger) {
+        return blogService.createBlog(blogRequest, bloger);
     }
 
     @GetMapping("/home/blogs")

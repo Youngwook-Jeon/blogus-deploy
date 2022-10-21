@@ -5,10 +5,7 @@ import com.young.blogusbackend.model.Bloger;
 import com.young.blogusbackend.repository.BlogerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -20,8 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 @Component
@@ -54,19 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Bloger bloger = blogerOptional
                 .orElseThrow(() -> new SpringBlogusException("존재하지 않는 계정입니다."));
 
-        return new User(
-                bloger.getEmail(),
-                bloger.getPassword(),
-                bloger.isEnabled(),
-                true,
-                true,
-                true,
-                getAuthorities(bloger.getRole().name())
-        );
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(String role) {
-        return Collections.singletonList(new SimpleGrantedAuthority(role));
+        return new BlogerAccount(bloger, true, true, true);
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

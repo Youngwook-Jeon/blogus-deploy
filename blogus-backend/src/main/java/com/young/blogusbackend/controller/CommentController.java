@@ -4,7 +4,9 @@ import com.young.blogusbackend.dto.CommentCreateRequest;
 import com.young.blogusbackend.dto.CommentResponse;
 import com.young.blogusbackend.dto.CommentUpdateRequest;
 import com.young.blogusbackend.dto.GenericResponse;
+import com.young.blogusbackend.model.Bloger;
 import com.young.blogusbackend.service.CommentService;
+import com.young.blogusbackend.util.CurrentBloger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,8 @@ public class CommentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentResponse createComment(@Valid @RequestBody CommentCreateRequest createRequest) {
-        return commentService.createComment(createRequest);
+    public CommentResponse createComment(@Valid @RequestBody CommentCreateRequest createRequest, @CurrentBloger Bloger currentBloger) {
+        return commentService.createComment(createRequest, currentBloger);
     }
 
     @GetMapping("/blog/{id}")
@@ -35,14 +37,15 @@ public class CommentController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommentResponse updateComment(
             @PathVariable Long id,
-            @RequestBody CommentUpdateRequest updateRequest
+            @RequestBody CommentUpdateRequest updateRequest,
+            @CurrentBloger Bloger currentBloger
     ) {
-        return commentService.updateComment(id, updateRequest);
+        return commentService.updateComment(id, updateRequest, currentBloger);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentResponse deleteComment(@PathVariable Long id) {
-        return commentService.deleteComment(id);
+    public CommentResponse deleteComment(@PathVariable Long id, @CurrentBloger Bloger currentBloger) {
+        return commentService.deleteComment(id, currentBloger);
     }
 }

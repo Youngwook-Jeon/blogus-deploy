@@ -25,17 +25,15 @@ import java.util.List;
 @Transactional
 public class BlogService {
 
-    private final AuthService authService;
     private final BlogRepository blogRepository;
     private final CategoryRepository categoryRepository;
     private final BlogMapper blogMapper;
     private final CategoryMapper categoryMapper;
 
-    public BlogResponse createBlog(BlogRequest blogRequest) {
-        Bloger currentUser = authService.getCurrentUser();
+    public BlogResponse createBlog(BlogRequest blogRequest, Bloger bloger) {
         Category category = categoryRepository.findByName(blogRequest.getCategory())
                 .orElseThrow(() -> new SpringBlogusException("존재하지 않는 카테고리입니다."));
-        Blog blog = blogMapper.blogRequestToBlog(blogRequest, currentUser, category);
+        Blog blog = blogMapper.blogRequestToBlog(blogRequest, bloger, category);
         blogRepository.save(blog);
         return blogMapper.blogToBlogResponse(blog);
     }

@@ -166,9 +166,9 @@ public class AuthService {
         return getAuthenticationResponseWithMessage(bloger, "ok");
     }
 
-    public void logout() {
-        Bloger currentUser = getCurrentUser();
-        currentUser.setRefreshToken(null);
-        blogerRepository.save(currentUser);
+    public void logout(Bloger bloger) {
+        System.out.println("블로거 탐색 전");
+        bloger.setRefreshToken(null);
+        blogerRepository.save(bloger);
     }
 }

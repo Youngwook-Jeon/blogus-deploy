@@ -28,13 +28,11 @@ public class CommentService {
     private final BlogRepository blogRepository;
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
-    private final AuthService authService;
 
-    public CommentResponse createComment(CommentCreateRequest createRequest) {
+    public CommentResponse createComment(CommentCreateRequest createRequest, Bloger currentBloger) {
         Blog blog = blogRepository.findById(createRequest.getBlogId())
                 .orElseThrow(() -> new SpringBlogusException("존재하지 않는 블로그입니다."));
-        Bloger bloger = authService.getCurrentUser();
-        Comment comment = commentMapper.commentCreateRequestToComment(createRequest, bloger, blog);
+        Comment comment = commentMapper.commentCreateRequestToComment(createRequest, currentBloger, blog);
         commentRepository.save(comment);
 
         return commentMapper.commentToCommentResponse(comment);
@@ -45,11 +43,10 @@ public class CommentService {
         return commentMapper.commentListToCommentResponseList(commentList);
     }
 
-    public CommentResponse updateComment(Long id, CommentUpdateRequest updateRequest) {
+    public CommentResponse updateComment(Long id, CommentUpdateRequest updateRequest, Bloger currentBloger) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new SpringBlogusException("존재하지 않는 댓글입니다."));
-        Bloger currentUser = authService.getCurrentUser();
-        if (!Objects.equals(currentUser.getId(), comment.getBloger().getId())) {
+        if (!Objects.equals(currentBloger.getId(), comment.getBloger().getId())) {
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 
@@ -64,12 +61,11 @@ public class CommentService {
         return commentMapper.commentToCommentResponse(comment);
     }
 
-    public CommentResponse deleteComment(Long id) {
+    public CommentResponse deleteComment(Long id, Bloger currentBloger) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new SpringBlogusException("존재하지 않는 댓글입니다."));
-        Bloger currentUser = authService.getCurrentUser();
-        if (!(comment.getBlogUserId().equals(currentUser.getId()) ||
-                comment.getBloger().getId().equals(currentUser.getId()))) {
+        if (!(comment.getBlogUserId().equals(currentBloger.getId()) ||
+                comment.getBloger().getId().equals(currentBloger.getId()))) {
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 

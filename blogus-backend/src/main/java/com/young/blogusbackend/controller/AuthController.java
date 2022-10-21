@@ -4,8 +4,10 @@ import com.young.blogusbackend.dto.AuthenticationResponse;
 import com.young.blogusbackend.dto.GenericResponse;
 import com.young.blogusbackend.dto.LoginRequest;
 import com.young.blogusbackend.dto.RegisterRequest;
+import com.young.blogusbackend.model.Bloger;
 import com.young.blogusbackend.service.AuthService;
 import com.young.blogusbackend.service.CookieService;
+import com.young.blogusbackend.util.CurrentBloger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,8 +75,8 @@ public class AuthController {
 
     @GetMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
-    public GenericResponse logout(HttpServletResponse response) {
-        authService.logout();
+    public GenericResponse logout(@CurrentBloger Bloger bloger, HttpServletResponse response) {
+        authService.logout(bloger);
         Cookie deletedCookie = cookieService.deleteRefreshTokenCookie();
         response.addCookie(deletedCookie);
         return new GenericResponse("로그아웃되었습니다.");

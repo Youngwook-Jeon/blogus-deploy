@@ -12,7 +12,9 @@ import com.young.blogusbackend.model.Role;
 import com.young.blogusbackend.model.VerificationToken;
 import com.young.blogusbackend.repository.BlogerRepository;
 import com.young.blogusbackend.repository.VerificationTokenRepository;
+import com.young.blogusbackend.security.BlogerAccount;
 import com.young.blogusbackend.security.JwtProvider;
+import com.young.blogusbackend.util.AuthTestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -317,28 +319,14 @@ class AuthServiceTest {
     @Test
     void testLogout() {
         // Setup
-        final Authentication authentication = new UsernamePasswordAuthenticationToken(new User("mayerjeon@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority(Role.ROLE_USER.name()))), "password");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Configure BlogerRepository.findByEmail(...).
-        final Optional<Bloger> blogerOptional = Optional.of(
-                new Bloger(0L, "name", "mayerjeon@gmail.com", "password", "avatar", Role.ROLE_USER, "refreshToken",
-                        LocalDateTime.of(2020, 1, 1, 0, 0, 0, 0).toInstant(
-                                ZoneOffset.UTC), LocalDateTime.of(2020, 1, 1, 0, 0, 0, 0).toInstant(ZoneOffset.UTC),
-                        true));
-        when(mockBlogerRepository.findByEmail("mayerjeon@gmail.com")).thenReturn(blogerOptional);
-
-        // Configure BlogerRepository.save(...).
-        final Bloger bloger = new Bloger(0L, "name", "mayerjeon@gmail.com", "password", "avatar", Role.ROLE_USER, null,
-                LocalDateTime.of(2020, 1, 1, 0, 0, 0, 0).toInstant(
-                        ZoneOffset.UTC), LocalDateTime.of(2020, 1, 1, 0, 0, 0, 0).toInstant(ZoneOffset.UTC), true);
-        when(mockBlogerRepository.save(any(Bloger.class))).thenReturn(bloger);
+        Bloger validUser = AuthTestUtil.createValidUser();
+        validUser.setRefreshToken("refreshtoken");
 
         // Run the test
-        authServiceUnderTest.logout();
+        authServiceUnderTest.logout(validUser);
 
         // Verify the results
-        verify(mockBlogerRepository, times(1)).save(any(Bloger.class));
+        assertThat(validUser.getRefreshToken()).isNull();
     }
 
 }
