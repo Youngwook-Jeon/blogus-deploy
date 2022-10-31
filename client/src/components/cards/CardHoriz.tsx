@@ -11,6 +11,7 @@ interface IProps {
 
 const CardHoriz: React.FC<IProps> = ({ blog }) => {
   const { slug } = useParams<IParams>();
+
   const { auth } = useSelector((state: RootStore) => state);
   // const dispatch = useDispatch();
 
@@ -55,16 +56,17 @@ const CardHoriz: React.FC<IProps> = ({ blog }) => {
             {
               blog.title && 
               <div className="card-text d-flex justify-content-between align-items-center">
-                {
+                {/* TODO: Update/Delete a blog */}
+                {/* {
                   (slug === auth.user?.id) &&
                   <div style={{ cursor: 'pointer' }}>
                     <Link to={`/update_blog/${blog.id}`}>
                       <i className="fas fa-edit" title="edit" />
                     </Link>
 
-                    {/* <i className="fas fa-trash text-danger mx-3" title="delete" onClick={handleDelete} /> */}
+                    <i className="fas fa-trash text-danger mx-3" title="delete" onClick={handleDelete} />
                   </div>
-                }
+                } */}
                 <small className="text-muted">
                   {new Date(blog.createdAt).toLocaleString()}
                 </small>

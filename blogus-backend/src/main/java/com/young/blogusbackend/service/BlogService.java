@@ -66,4 +66,9 @@ public class BlogService {
                 .orElseThrow(() -> new SpringBlogusException("존재하지 않는 블로그입니다."));
         return blogMapper.blogToBlogResponse(blog);
     }
+
+    public List<BlogResponse> getBlogsByKeyword(String keyword) {
+        return blogMapper.blogListToBlogResponseList(
+                blogRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword));
+    }
 }

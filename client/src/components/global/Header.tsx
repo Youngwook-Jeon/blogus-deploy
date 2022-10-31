@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import Search from './Search';
+import Search from './Search';
 import Menu from './Menu';
 import logo from '../../assets/blogus-logo.png';
 
@@ -15,7 +15,7 @@ const Header = () => {
       </button>
 
       <div className="collapse navbar-collapse" id="navbarNav">
-        {/* <Search /> */}
+        <Search />
         <Menu />
       </div>
     </nav>

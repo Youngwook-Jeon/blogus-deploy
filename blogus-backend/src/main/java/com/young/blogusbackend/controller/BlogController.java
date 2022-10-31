@@ -61,4 +61,10 @@ public class BlogController {
         return blogService.getBlogById(id);
     }
 
+    @GetMapping("/search/blogs")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BlogResponse> getBlogsByKeyword(@RequestParam String keyword) {
+        return blogService.getBlogsByKeyword(keyword);
+    }
+
 }

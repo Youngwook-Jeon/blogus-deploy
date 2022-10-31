@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,4 +26,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Override
     @EntityGraph(attributePaths = {"bloger", "category"})
     Optional<Blog> findById(Long id);
+
+    @EntityGraph(attributePaths = {"bloger", "category"})
+    List<Blog> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String keyword1, String keyword2);
 }
