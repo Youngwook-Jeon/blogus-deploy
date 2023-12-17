@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class AppExceptionHandler implements ErrorController {
 
     public static final String ACCESS_NOT_PERMITED = "접근 권한이 없습니다.";
+    public static final String WRONG_REQUEST = "잘못된 요청입니다.";
     public static final String NOT_FOUND = "이 URL에 대응되는 리소스가 존재하지 않습니다.";
     public static final String METHOD_NOT_ALLOWED = "해당 엔드포인트에 허용되는 메서드가 아닙니다.";
     public static final String INTERNAL_SERVER_ERROR = "서버 에러가 발생했습니다. 잠시 후에 다시 시도해주세요.";
@@ -68,6 +70,16 @@ public class AppExceptionHandler implements ErrorController {
     @ExceptionHandler(value = { HttpRequestMethodNotSupportedException.class })
     public ResponseEntity<Object> handleMethodNotSupportedException(HttpRequestMethodNotSupportedException ex, WebRequest webRequest) {
         return new ResponseEntity<>(getErrorResponse(METHOD_NOT_ALLOWED), HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(value = { HttpMessageNotReadableException.class })
+    public ResponseEntity<Object> handleException(HttpMessageNotReadableException ex, WebRequest webRequest) {
+        return new ResponseEntity<>(getErrorResponse(WRONG_REQUEST), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = { IllegalArgumentException.class })
+    public ResponseEntity<Object> handleException(IllegalArgumentException ex, WebRequest webRequest) {
+        return new ResponseEntity<>(getErrorResponse(WRONG_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = { Exception.class })
