@@ -34,6 +34,7 @@ public class BlogController {
     @GetMapping("/home/blogs")
     @ResponseStatus(HttpStatus.OK)
     public List<CategoryWithBlogsDto> getHomeBlogs() {
+        // TODO: 카테고리로 옮기기
         return blogService.getHomeBlogs();
     }
 
